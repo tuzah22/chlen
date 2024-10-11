@@ -1,8 +1,9 @@
 const ApiError = require('../exceptions/apiErrors');
 const jwt = require('../utils/generateJwt');
 
-module.exports = function (req, res, next) {
+module.exports = async function (req, res, next) {
     try {
+      console.log("we are here")
         const authHeader = req.headers.authorization;
         if (!authHeader) {
             return next(ApiError.UnauthorizedError());
@@ -15,8 +16,8 @@ module.exports = function (req, res, next) {
         }
         console.log(accessToken);
 
-        const userData = jwt.validateAccessToken(accessToken);
-        
+        const userData = await jwt.validateAccessToken(accessToken);
+        console.log(userData)
         if (!userData) {
             return next(ApiError.UnauthorizedError());
         }
